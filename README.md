@@ -10,5 +10,14 @@ conan create . sword/sorcery
 ```
 
 ## Dependencies
+ad
+fa
+f
+safd
+as
+fd
+af
+sd
+
 
 ![Dependency graph](./images/graph.png)
