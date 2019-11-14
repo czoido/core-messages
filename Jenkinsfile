@@ -65,7 +65,7 @@ def artifactory_name = "Artifactory Docker"
 def artifactory_repo = "conan-local"
 def docker_runs = [:]  // [id] = [docker_image, profile]
 docker_runs["conanio-gcc8"] = ["conanio/gcc8", "conanio-gcc8"]
-docker_runs["conanio-gcc7"] = ["conanio/gcc7", "conanio-gcc7"]
+//docker_runs["conanio-gcc7"] = ["conanio/gcc7", "conanio-gcc7"]
 
 def stages = [:]
 docker_runs.each { id, values ->
