@@ -1,0 +1,33 @@
+{
+ "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Release\ncompiler=apple-clang\ncompiler.libcxx=libc++\ncompiler.version=11.0\nos=Macos\nos_build=Macos\n[options]\n[build_requires]\n[env]\n",
+ "graph_lock": {
+  "nodes": {
+   "6a7bf4d6-071a-11ea-8bdd-4865ee10951b": {
+    "pref": "protobuf/3.9.1@bincrafters/stable#0:eec6acc43f6348a597c20e5bd28d9e0590a02597#0",
+    "options": "fPIC=True\nlite=False\nshared=False\nwith_zlib=False"
+   },
+   "6a7bf9fe-071a-11ea-8bdd-4865ee10951b": {
+    "pref": "core-messages/0.0@sword/sorcery#1d92702b1a38332bfb8cb0461ddb1031:1f762bdc9e20db189997cb00e0467e8d3ef0f65d#c01aff9ca4b11d27983d4a78d274fe05",
+    "options": "shared=False\nprotobuf:fPIC=True\nprotobuf:lite=False\nprotobuf:shared=False\nprotobuf:with_zlib=False",
+    "modified": "Build",
+    "requires": {
+     "protobuf/3.9.1@bincrafters/stable#0": "6a7bf4d6-071a-11ea-8bdd-4865ee10951b",
+     "protoc_installer/3.9.1@bincrafters/stable": "6a7bf738-071a-11ea-8bdd-4865ee10951b"
+    },
+    "path": "/Users/carlos/Documents/hackaton/sword-sandbox/core-messages/conanfile.py"
+   },
+   "6a7bf738-071a-11ea-8bdd-4865ee10951b": {
+    "pref": "protoc_installer/3.9.1@bincrafters/stable#0:2e75a38ab42eff687ae1ee29a83956368f5e97fe#0",
+    "options": "protobuf:fPIC=True\nprotobuf:lite=False\nprotobuf:shared=False\nprotobuf:with_zlib=False",
+    "requires": {
+     "protobuf/3.9.1@bincrafters/stable#0": "6a7bfad0-071a-11ea-8bdd-4865ee10951b"
+    }
+   },
+   "6a7bfad0-071a-11ea-8bdd-4865ee10951b": {
+    "pref": "protobuf/3.9.1@bincrafters/stable#0:eec6acc43f6348a597c20e5bd28d9e0590a02597#0",
+    "options": "fPIC=True\nlite=False\nshared=False\nwith_zlib=False"
+   }
+  }
+ },
+ "version": "0.1"
+}
