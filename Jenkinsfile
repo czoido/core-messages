@@ -7,6 +7,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                 def client = Artifactory.newConanClient()
                 def remoteName = "artifactory-local"
                 def lockfile = "${id}.lock"
+                println "lockfile: ${id}.lock"
 
                 try {
                     client.run(command: "config install -sf conan/config https://github.com/sword-and-sorcery/sword-and-sorcery.git")
