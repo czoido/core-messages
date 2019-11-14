@@ -32,6 +32,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                         String arguments = "--profile ${profile} --lockfile=${lockfile}"
                         client.run(command: "graph lock . ${arguments}".toString())
                         client.run(command: "create . sword/sorcery ${arguments} --build missing".toString())
+                        sh "conan search *"
                         sh "cat ${lockfile}"
                     }
 
@@ -41,8 +42,9 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     }
 
                     stage("Create build info") {
-                        String upload_build_info = "conan_build_info --v2 create --lockfile ${lockfile} --user admin --password password ${buildInfoFilename}"
-                        sh upload_build_info
+                        sh "conan search *"
+                        String create_build_info = "conan_build_info --v2 create --lockfile ${lockfile} --user admin --password password ${buildInfoFilename}"
+                        sh create_build_info
                     }
 
                     stage("Publish build info") {
