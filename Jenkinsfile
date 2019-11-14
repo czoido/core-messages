@@ -34,24 +34,28 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                         client.run(command: "create . sword/sorcery ${arguments} --build missing".toString())
                         client.run(command: "search *".toString())
                         sh "cat ${lockfile}"
-                    }
 
-                    stage("Upload packages") {
                         String uploadCommand = "upload core-messages* --all -r ${remoteName} --confirm --force"
                         client.run(command: uploadCommand)
-                    }
 
-                    stage("Create build info") {
                         sh "conan config home"
                         client.run(command: "search *".toString())
                         String create_build_info = "conan_build_info --v2 create --lockfile ${lockfile} --user admin --password password ${buildInfoFilename}"
                         sh create_build_info
-                    }
 
-                    stage("Publish build info") {
                         String publish_build_info = "conan_build_info --v2 publish --url http://host.docker.internal:8090/artifactory --user admin --password password ${buildInfoFilename}"
                         sh publish_build_info
+
                     }
+
+                    // stage("Upload packages") {
+                    // }
+
+                    // stage("Create build info") {
+                    // }
+
+                    // stage("Publish build info") {
+                    // }
 
                     stage("Compute build info") {
                         // def buildInfo = Artifactory.newBuildInfo()
