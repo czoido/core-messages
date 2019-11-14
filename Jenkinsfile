@@ -35,7 +35,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                         client.run(command: "search *".toString())
                         sh "cat ${lockfile}"
 
-                        String uploadCommand = "upload core-messages* --all -r ${remoteName} --confirm --force"
+                        String uploadCommand = "upload * --all -r ${remoteName} --confirm --force"
                         client.run(command: uploadCommand)
 
                         sh "conan config home"
