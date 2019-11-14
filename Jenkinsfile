@@ -25,6 +25,9 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     stage("Get dependencies and create app") {
                         String arguments = "--profile ${profile} --lockfile=${lockfile}"
                         client.run(command: "graph lock . ${arguments}".toString())
+                        def buildInfo = Artifactory.newBuildInfo()
+                        println "${buildInfo.getNumber()} ${buildInfo.getName()}"
+                        sh "conan_build_info --v2 start "
                         client.run(command: "create . sword/sorcery ${arguments} --build missing".toString())
                         sh "cat ${lockfile}"
                     }
