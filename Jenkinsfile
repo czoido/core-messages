@@ -42,6 +42,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     }
 
                     stage("Create build info") {
+                        sh "conan config home"
                         client.run(command: "search *".toString())
                         String create_build_info = "conan_build_info --v2 create --lockfile ${lockfile} --user admin --password password ${buildInfoFilename}"
                         sh create_build_info
