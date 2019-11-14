@@ -30,7 +30,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     }
 
                     stage("Upload packages") {
-                        String uploadCommand = "upload core-messages* --all -r ${remoteName} --confirm"
+                        String uploadCommand = "upload core-messages* --all -r ${remoteName} --confirm --force"
                         client.run(command: uploadCommand)
                     }
 
