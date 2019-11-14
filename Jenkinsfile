@@ -34,22 +34,22 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     }
 
                     stage("Compute build info") {
-                        def buildInfo = Artifactory.newBuildInfo()
-                        String artifactory_credentials = "http://artifactory:8081/artifactory,admin,password"
-                        def buildInfoFilename = "${id}.json"
+                        // def buildInfo = Artifactory.newBuildInfo()
+                        // String artifactory_credentials = "http://artifactory:8081/artifactory,admin,password"
+                        // def buildInfoFilename = "${id}.json"
 
-                        // Install helper script (WIP)
-                        git url: 'https://gist.github.com/a39acad525fd3e7e5315b2fa0bc70b6f.git'
-                        sh 'pip install rtpy'
+                        // // Install helper script (WIP)
+                        // git url: 'https://gist.github.com/a39acad525fd3e7e5315b2fa0bc70b6f.git'
+                        // sh 'pip install rtpy'
 
-                        String python_command = "python lockfile_buildinfo.py --remotes=${artifactory_credentials}"
-                        python_command += " --build-number=${buildInfo.getNumber()} --build-name=\"${buildInfo.getName()}\""
-                        python_command += " --multi-module"
-                        python_command += " --output-file=${buildInfoFilename} ${lockfile}"
-                        sh python_command
+                        // String python_command = "python lockfile_buildinfo.py --remotes=${artifactory_credentials}"
+                        // python_command += " --build-number=${buildInfo.getNumber()} --build-name=\"${buildInfo.getName()}\""
+                        // python_command += " --multi-module"
+                        // python_command += " --output-file=${buildInfoFilename} ${lockfile}"
+                        // sh python_command
 
-                        echo "Stash '${id}' -> '${buildInfoFilename}'"
-                        stash name: id, includes: "${buildInfoFilename}"
+                        // echo "Stash '${id}' -> '${buildInfoFilename}'"
+                        // stash name: id, includes: "${buildInfoFilename}"
                     }
                 }
                 finally {
@@ -82,25 +82,25 @@ node {
 
         stage("Retrieve build info") {
             docker.image("conanio/gcc8").inside("--net=docker_jenkins_artifactory") {
-                def buildInfo = Artifactory.newBuildInfo()
-                String artifactory_credentials = "http://artifactory:8081/artifactory,admin,password"
-                def buildInfoFilename = "buildinfo.json"
+                //def buildInfo = Artifactory.newBuildInfo()
+                // String artifactory_credentials = "http://artifactory:8081/artifactory,admin,password"
+                // def buildInfoFilename = "buildinfo.json"
                 
-                // Install helper script (WIP)
-                git url: 'https://gist.github.com/a39acad525fd3e7e5315b2fa0bc70b6f.git'
-                sh 'pip install rtpy'
+                // // Install helper script (WIP)
+                // git url: 'https://gist.github.com/a39acad525fd3e7e5315b2fa0bc70b6f.git'
+                // sh 'pip install rtpy'
 
-                // Merge Build Info from nodes
-                String merge_bi_command = "python merge_buildinfo.py --output-file ${buildInfoFilename}"
-                docker_runs.each { id, values ->
-                    unstash id
-                    merge_bi_command += " ${id}.json"
-                }
-                sh merge_bi_command
+                // // Merge Build Info from nodes
+                // String merge_bi_command = "python merge_buildinfo.py --output-file ${buildInfoFilename}"
+                // docker_runs.each { id, values ->
+                //     unstash id
+                //     merge_bi_command += " ${id}.json"
+                // }
+                // sh merge_bi_command
 
-                // Publish build info
-                String publish_command = "python publish_buildinfo.py --remote=${artifactory_credentials} ${buildInfoFilename}"
-                sh publish_command
+                // // Publish build info
+                // String publish_command = "python publish_buildinfo.py --remote=${artifactory_credentials} ${buildInfoFilename}"
+                // sh publish_command
 
             }
         }
