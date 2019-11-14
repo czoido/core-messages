@@ -41,12 +41,12 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     }
 
                     stage("Create build info") {
-                        String upload_build_info = "conan_build_info --v2 create --lockfile ${lockfile} --user user --password password ${buildInfoFilename}"
+                        String upload_build_info = "conan_build_info --v2 create --lockfile ${lockfile} --user admin --password password ${buildInfoFilename}"
                         sh upload_build_info
                     }
 
                     stage("Publish build info") {
-                        String publish_build_info = "conan_build_info --v2 publish --url http://host.docker.internal:8090/artifactory --user user --password password ${buildInfoFilename}"
+                        String publish_build_info = "conan_build_info --v2 publish --url http://host.docker.internal:8090/artifactory --user admin --password password ${buildInfoFilename}"
                         sh publish_build_info
                     }
 
