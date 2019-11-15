@@ -76,7 +76,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                 }
                 finally {
                     deleteDir()
-                }
+                }                
             }
         }
     }
