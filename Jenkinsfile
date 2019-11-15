@@ -3,13 +3,16 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
     return {
         node {
             docker.image(docker_image).inside("--net=docker_jenkins_artifactory") {
+                sh "export CONAN_USER_HOME=${env.WORKSPACE}/conan_home"
                 def server = Artifactory.server artifactory_name
                 def client = Artifactory.newConanClient(userHome: "${env.WORKSPACE}/conan_home".toString())
                 def remoteName = "artifactory-local"
                 def lockfile = "${id}.lock"
                 def buildInfo = Artifactory.newBuildInfo()
                 def buildInfoFilename = "${id}.json"
-
+                echo "${env.WORKSPACE}/conan_home"
+                echo "conan config home"
+                client.run(command: "config home")
                 try {
                     client.run(command: "config install -sf conan/config https://github.com/sword-and-sorcery/sword-and-sorcery.git")
                     client.run(command: "config install -sf hooks -tf hooks https://github.com/conan-io/hooks.git")
