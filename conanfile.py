@@ -17,9 +17,7 @@ class CoreMessages(ConanFile):
 
     generators = "cmake"
 
-    scm = {"type": "git",
-           "url": "auto",
-           "revision": "auto"}
+    exports_sources = "CMakeLists.txt"
 
     exports = "messages/*.proto"
 
