@@ -35,8 +35,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                         client.run(command: "graph lock . ${arguments}".toString())
                         client.run(command: "create . sword/sorcery ${arguments} --build missing".toString())
                         client.run(command: "search *".toString())
-                        sh '''search *'''
-                        sh search_packages
+                        sh '''conan search *'''
                         sh "cat ${lockfile}"
 
                         String uploadCommand = "upload * --all -r ${remoteName} --confirm --force"
