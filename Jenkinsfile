@@ -3,9 +3,9 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
     return {
         node {
             docker.image(docker_image).inside("--net=docker_jenkins_artifactory") {
-                withEnv(["CONAN_USER_HOME=${env.WORKSPACE}"]) {
+                withEnv(["CONAN_USER_HOME=${env.WORKSPACE}/conan_home"]) {
                     def server = Artifactory.server artifactory_name
-                    def client = Artifactory.newConanClient(userHome: "${env.WORKSPACE}".toString())
+                    def client = Artifactory.newConanClient(userHome: "${env.WORKSPACE}/conan_home".toString())
                     def remoteName = "artifactory-local"
                     def lockfile = "${id}.lock"
                     def buildInfo = Artifactory.newBuildInfo()
@@ -18,7 +18,6 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                         client.remote.add server: server, repo: artifactory_repo, remoteName: remoteName, force: true
 
                         stage("${id}") {
-                            echo 'Running in ${docker_image}'
                         }
 
                         stage("Get project") {
