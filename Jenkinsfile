@@ -73,10 +73,10 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                             // stash name: id, includes: "${buildInfoFilename}"
                         }
                     }
-                }
-                finally {
-                    deleteDir()
-                }                
+                    finally {
+                        deleteDir()
+                    }  
+                }              
             }
         }
     }
