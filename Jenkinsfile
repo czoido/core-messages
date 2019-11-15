@@ -4,7 +4,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
         node {
             docker.image(docker_image).inside("--net=docker_jenkins_artifactory") {
                 def server = Artifactory.server artifactory_name
-                def client = Artifactory.newConanClient()
+                def client = Artifactory.newConanClient(userHome: "${env.WORKSPACE}/conan_home".toString())
                 def remoteName = "artifactory-local"
                 def lockfile = "${id}.lock"
                 def buildInfo = Artifactory.newBuildInfo()
