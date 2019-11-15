@@ -3,19 +3,18 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
     return {
         node {
             docker.image(docker_image).inside("--net=docker_jenkins_artifactory") {
-                def server = Artifactory.server artifactory_name
-                def client = Artifactory.newConanClient()
+                //def server = Artifactory.server artifactory_name
+                //def client = Artifactory.newConanClient()
                 def remoteName = "artifactory-local"
                 def lockfile = "${id}.lock"
-                def buildInfo = Artifactory.newBuildInfo()
+                //def buildInfo = Artifactory.newBuildInfo()
                 def buildInfoFilename = "${id}.json"
 
                 try {
-                    client.run(command: "config install -sf conan/config https://github.com/sword-and-sorcery/sword-and-sorcery.git")
-                    client.run(command: "config install -sf hooks -tf hooks https://github.com/conan-io/hooks.git")
-                    client.run(command: "config set storage.path=./data")
-                    client.run(command: "config set general.default_package_id_mode=recipe_revision_mode")
-                    client.remote.add server: server, repo: artifactory_repo, remoteName: remoteName, force: true
+                    sh "conan config install -sf conan/config https://github.com/sword-and-sorcery/sword-and-sorcery.git"
+                    sh "conan config install -sf hooks -tf hooks https://github.com/conan-io/hooks.git"
+                    sh "conan remote add artifactory-local http://host.docker.internal:8090/artifactory"
+                    sh "conan user -p password -r artifactory-local admin"
 
                     stage("${id}") {
                         echo 'Running in ${docker_image}'
@@ -26,23 +25,23 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     }
 
                     stage("Start build info") {
-                        String start_build_info = "conan_build_info --v2 start \"${buildInfo.getName()}\" ${buildInfo.getNumber()}"
+                        String start_build_info = "conan_build_info --v2 start \"${env.JOB_NAME}\" ${env.BUILD_NUMBER}"
                         sh start_build_info
                     }
 
                     stage("Get dependencies and create app") {
                         String arguments = "--profile ${profile} --lockfile=${lockfile}"
-                        client.run(command: "graph lock . ${arguments}".toString())
-                        client.run(command: "create . sword/sorcery ${arguments} --build missing".toString())
-                        client.run(command: "search *".toString())
+                        sh "conan graph lock . ${arguments}"
+                        sh "conan create . sword/sorcery ${arguments} --build missing"
+                        sh "conan search '*''"
                         sh "conan search core-messages/0.0@sword/sorcery"
                         sh "cat ${lockfile}"
 
-                        String uploadCommand = "upload * --all -r ${remoteName} --confirm --force"
-                        client.run(command: uploadCommand)
+                        String uploadCommand = "conan upload '*' --all -r ${remoteName} --confirm --force"
+                        sh uploadCommand
 
                         sh "conan config home"
-                        client.run(command: "search *".toString())
+                        sh "search '*'"
                         String create_build_info = "conan_build_info --v2 create --lockfile ${lockfile} --user admin --password password ${buildInfoFilename}"
                         sh create_build_info
 
