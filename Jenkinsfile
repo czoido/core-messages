@@ -2,7 +2,7 @@
 def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
     return {
         node {
-            docker.image(docker_image).inside("--net=docker_jenkins_artifactory") {
+            docker.image(docker_image).inside {
                 //def server = Artifactory.server artifactory_name
                 //def client = Artifactory.newConanClient()
                 def remoteName = "artifactory-local"
@@ -14,6 +14,7 @@ def get_stages(id, docker_image, artifactory_name, artifactory_repo, profile) {
                     sh "conan config install -sf conan/config https://github.com/sword-and-sorcery/sword-and-sorcery.git"
                     sh "conan config install -sf hooks -tf hooks https://github.com/conan-io/hooks.git"
                     sh "conan remote remove artifactory-local"
+                    sh "uname -a"
                     sh "conan remote add artifactory-local http://host.docker.internal:8090/artifactory"
                     sh "conan user -p password -r artifactory-local admin"
 
