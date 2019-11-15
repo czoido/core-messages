@@ -17,7 +17,7 @@ class CoreMessages(ConanFile):
 
     generators = "cmake"
 
-    exports_sources = "CMakeLists.txt"
+    #exports_sources = "CMakeLists.txt"
 
     exports = "messages/*.proto"
 
